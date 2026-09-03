@@ -43,6 +43,9 @@ describe("Auth (e2e)", () => {
 
 	it("does not expose a vendor telemetry collection route", async () => {
 		await request(app.getHttpServer())
+			.get("/internal/telemetry/rollup")
+			.expect(404);
+		await request(app.getHttpServer())
 			.post("/internal/telemetry/rollup")
 			.expect(404);
 	});

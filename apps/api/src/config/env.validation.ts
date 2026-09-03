@@ -122,6 +122,22 @@ export class EnvironmentVariables {
 	@IsOptional()
 	@IsString()
 	AGENT_BRIDGE_SECRET?: string;
+
+	@IsOptional()
+	@IsString()
+	HERMES_BASE_URL?: string;
+
+	@IsOptional()
+	@IsString()
+	HERMES_API_KEY?: string;
+
+	@IsOptional()
+	@IsString()
+	HERMES_MODEL_ID?: string;
+
+	@IsOptional()
+	@IsString()
+	HERMES_CONTEXT_WINDOW?: string;
 }
 
 export type RawEnvironment = Record<string, string | undefined>;

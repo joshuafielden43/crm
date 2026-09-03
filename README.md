@@ -148,7 +148,7 @@ A [Turborepo](https://turborepo.dev) monorepo on [Bun](https://bun.com), deploye
 | | |
 | --- | --- |
 | **Agent** | [eve](https://eve.dev) — durable sessions, tools, skills, schedules, sandboxes |
-| **Model** | [Vercel AI Gateway](https://vercel.com/docs/ai-gateway) — no provider SDK, and OIDC on Vercel means no key to manage |
+| **Model** | Explicit Hermes endpoint through the OpenAI-compatible Chat Completions API; no vendor fallback |
 | **Sandbox** | [Vercel Sandbox](https://vercel.com/docs/vercel-sandbox) in production, Docker or microsandbox locally |
 | **Front end** | [Next.js](https://nextjs.org) App Router · [shadcn/ui](https://ui.shadcn.com) · [nuqs](https://nuqs.dev) for URL state |
 | **API** | [NestJS](https://nestjs.com) with [nestjs-trpc](https://nestjs-trpc.io) — HTTP, auth, tRPC, mailbox sync |

@@ -114,12 +114,21 @@ single place that knows what is set.
 | `PERPLEXITY_API_KEY` | Open-web research with citations; finds a LinkedIn slug |
 | `GITHUB_TOKEN` | Raises the GitHub rate limit from 60/hour |
 | `BLOB_READ_WRITE_TOKEN` | Mirrors logos and photos into Blob |
-| `AI_GATEWAY_API_KEY` | The model. Not needed on Vercel (OIDC) |
+| `HERMES_BASE_URL` | Explicit Hermes API prefix, including `/v1` |
+| `HERMES_API_KEY` | Credential for that endpoint only |
+| `HERMES_MODEL_ID` | Single approved primary model ID |
+| `HERMES_CONTEXT_WINDOW` | Verified positive context-window size in tokens |
 | `AGENT_BRIDGE_SECRET` | The rep-facing Agent panel — see `agent.md` |
 
 `BLOB_READ_WRITE_TOKEN` is also in `env.validation.ts` and `apps/api/turbo.json`
 because the API and the seed write pictures too. The Next.js app is deliberately
 excluded — recognising our URL for the image optimizer needs no token.
+
+All four Hermes values are required together. Missing or invalid values disable model requests, not the API.
+The catalog uses local configuration and makes no discovery request.
+Gateway and OpenAI environment credentials cannot supply a fallback.
+Only the configured endpoint receives primary model requests; redirects are refused.
+These controls do not remove the separate optional Perplexity research tool.
 
 ### The Context key is asked for, not configured
 

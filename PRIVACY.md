@@ -17,15 +17,17 @@ These tables contain historical data until a separate migration removes them.
 
 ## Not removed in this slice
 
-- Eve framework tracing and provider routing.
-- Vercel model catalog and image storage integrations.
+- Eve framework tracing.
+- Vercel image storage integration.
 - Perplexity, Context.dev, Slack, Microsoft, and other optional integrations.
 - First-party visitor tracking.
 - Framework-level diagnostic code inside dependencies.
 
 Hermes is the required model provider for the lab deployment.
-This slice does not configure Hermes or approve another model provider.
-Do not enable model work until routing and failure behavior pass verification.
+Primary model routing now requires explicit Hermes configuration and fails closed without it.
+The vendor model catalog is removed. Root, builder, and runner share the Hermes request boundary.
+See `docs/privacy-hermes-routing.md` for the implementation scope and verification.
+Live deployment compatibility and the separate Perplexity research tool remain unapproved.
 
 ## Verification
 

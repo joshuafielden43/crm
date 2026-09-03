@@ -5,13 +5,17 @@
 	"type": "module",
 	"exports": {
 		".": "./src/index.ts",
-		"./load": "./src/load.ts"
+		"./load": "./src/load.ts",
+		"./hermes": "./src/hermes.ts"
 	},
 	"scripts": {
 		"check-types": "tsc --noEmit",
 		"lint": "biome check .",
 		"test": "bun test",
 		"clean": "rm -rf .turbo node_modules"
+	},
+	"dependencies": {
+		"zod": "^4.4.3"
 	},
 	"devDependencies": {
 		"@crm/typescript-config": "workspace:*",

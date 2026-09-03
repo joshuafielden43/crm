@@ -1,14 +1,16 @@
-import { DEFAULT_AGENT_MODEL } from "@crm/db/settings";
+import { HERMES_UNCONFIGURED } from "@crm/env/hermes";
 import { defineAgent, defineDynamic } from "eve";
 import { z } from "zod";
+import { blockedModel } from "../../lib/hermes-model";
 import { selectedModel } from "../../lib/model";
 
 export default defineAgent({
+	modelContextWindowTokens: HERMES_UNCONFIGURED.contextWindowTokens,
 	description:
 		"Turn one private CRM builder-chat request into a validated, reviewable team-agent version without deploying it.",
 	model: defineDynamic({
-		fallback: DEFAULT_AGENT_MODEL.id,
-		events: { "session.started": () => selectedModel() },
+		fallback: blockedModel(),
+		events: { "step.started": () => selectedModel() },
 	}),
 	outputSchema: z.object({
 		status: z.literal("draft_ready"),

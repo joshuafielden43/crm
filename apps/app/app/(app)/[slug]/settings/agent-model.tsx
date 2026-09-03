@@ -79,7 +79,7 @@ export function AgentModel() {
 		trpc.settings.setAgentModel.mutationOptions({
 			onSuccess: async () => {
 				await cache.settings();
-				toast.success("The agent will use this model from its next session.");
+				toast.success("The agent will use this model from its next step.");
 			},
 			onError: (error) => toast.error(error.message),
 		}),
@@ -111,7 +111,7 @@ export function AgentModel() {
 			<CardHeader>
 				<CardTitle>Research agent</CardTitle>
 				<CardDescription>
-					The model the agent thinks with, routed through the Vercel AI Gateway.
+					The model the agent uses through the configured Hermes endpoint.
 				</CardDescription>
 			</CardHeader>
 
@@ -174,7 +174,7 @@ export function AgentModel() {
 
 				<p className="text-muted-foreground text-xs">
 					{unavailable
-						? `Could not reach the AI Gateway to list models. The agent is still running ${effectiveId}.`
+						? "Hermes is not configured. Model requests are disabled."
 						: effective
 							? `${effectiveId} · ${contextHint(effective.contextWindowTokens)}${
 									priceHint(effective) ? ` · ${priceHint(effective)}` : ""

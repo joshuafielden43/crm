@@ -1,3 +1,4 @@
+import { HERMES_UNCONFIGURED, readHermesConfig } from "@crm/env/hermes";
 import type { Db } from "./client";
 import {
 	DEFAULT_REPORTING_CURRENCY,
@@ -8,9 +9,15 @@ import {
 export const SETTINGS_ID = "app";
 
 export const DEFAULT_AGENT_MODEL = {
-	id: "zai/glm-5.2-fast",
-	contextWindowTokens: 1_000_000,
+	...HERMES_UNCONFIGURED,
 } as const;
+
+export function defaultAgentModel() {
+	const config = readHermesConfig();
+	return config
+		? { id: config.modelId, contextWindowTokens: config.contextWindowTokens }
+		: DEFAULT_AGENT_MODEL;
+}
 
 export interface AgentModelSetting {
 	id: string;
@@ -25,13 +32,13 @@ export async function readAgentModel(db: Db): Promise<AgentModelSetting> {
 	});
 
 	if (!row?.agentModelId) {
-		return { ...DEFAULT_AGENT_MODEL, isDefault: true };
+		return { ...defaultAgentModel(), isDefault: true };
 	}
 
 	return {
 		id: row.agentModelId,
 		contextWindowTokens:
-			row.agentModelContextWindow ?? DEFAULT_AGENT_MODEL.contextWindowTokens,
+			row.agentModelContextWindow ?? defaultAgentModel().contextWindowTokens,
 		isDefault: false,
 	};
 }

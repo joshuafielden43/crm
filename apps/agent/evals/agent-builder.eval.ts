@@ -1,4 +1,5 @@
 import { db } from "@crm/db";
+import { readHermesConfig } from "@crm/env/hermes";
 import { agentManifest } from "@crm/validation/agent-manifest";
 import { defineEval } from "eve/evals";
 import { equals, satisfies } from "eve/evals/expect";
@@ -10,13 +11,9 @@ export default defineEval({
 	timeoutMs: 180_000,
 	async test(t) {
 		const secret = process.env.AGENT_BRIDGE_SECRET?.trim();
-		if (
-			!process.env.DATABASE_URL ||
-			!secret ||
-			(!process.env.AI_GATEWAY_API_KEY && !process.env.VERCEL_OIDC_TOKEN)
-		) {
+		if (!process.env.DATABASE_URL || !secret || !readHermesConfig()) {
 			t.skip(
-				"Requires DATABASE_URL, AGENT_BRIDGE_SECRET, and an AI Gateway credential.",
+				"Requires DATABASE_URL, AGENT_BRIDGE_SECRET, and complete Hermes configuration.",
 			);
 			return;
 		}

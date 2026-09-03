@@ -11,16 +11,18 @@ are in `docs/setup.md`.
 
 ## Model
 
-Default `zai/glm-5.2-fast`; `DEFAULT_AGENT_MODEL` in `@crm/db/settings` because the
-agent and the API both need it.
+Hermes is the only primary model destination. No vendor model is the default.
 
-- **A row (`AppSetting`), not an env var**, via `defineDynamic` on `session.started`.
-  Open conversations keep their model — prompt caches are per model.
-- **`lib/model.ts` always sends `modelContextWindowTokens`**; eve never inherits it.
-- **A failed read logs and keeps the compiled fallback.** Never throws.
-- **The chooser offers only `tool-use` models** (`ModelCatalogService`).
-- **Not a frontier model, deliberately** — refusing wrong answers is enforced by the
-  tools and evidence model, not model strength.
+- `HERMES_BASE_URL`, `HERMES_API_KEY`, `HERMES_MODEL_ID`, and `HERMES_CONTEXT_WINDOW` configure the deployment.
+- The chooser lists that single configured model without a network request.
+- Each `step.started` resolves a direct provider object. Eve cannot serialize provider objects in session selections.
+- All three agents use a blocked compiled fallback. Resolver failures cannot enable Gateway routing.
+- Existing stored model IDs must match the configured Hermes model. Old vendor choices fail closed.
+- Missing run context and failed database reads return blocked selections, never an unset selection.
+- The deployment context window overrides stale database values.
+- Requests use Chat Completions at the configured endpoint. Redirects fail instead of forwarding prompts or credentials.
+- Configuration changes take effect on the next step, including existing sessions.
+- See `privacy-hermes-routing.md` for verification and remaining work.
 
 ## Pictures are copied, never linked
 

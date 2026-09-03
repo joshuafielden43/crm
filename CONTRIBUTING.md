@@ -57,7 +57,7 @@ hooks live in `.githooks/` and `prepare` points `core.hooksPath` at them, so the
 install and no hook manager in the dependency tree. Turbo caches, so a second push that changed
 nothing relevant is nearly free.
 
-It needs the Postgres from `docker compose up -d`, because the API and telemetry tests are real
+It needs the Postgres from `docker compose up -d`, because the API tests are real
 integration tests. When you need to push past it — a WIP branch, a docker-less machine, a red test
 you are deliberately pushing to ask about — `git push --no-verify` skips it, and `CRM_SKIP_HOOKS=1`
 skips it for a whole shell.
@@ -76,7 +76,7 @@ state it cannot own — `ensureWorkspaceMembership` only backfills an owner into
 workspace — it asserts the precondition and fails, rather than clearing whatever is in the way.
 
 **`test` runs one package at a time (`turbo run test --concurrency=1`), and that is not an
-oversight.** `apps/api`, `apps/agent`, `packages/auth` and `packages/telemetry` all have real
+oversight.** `apps/api`, `apps/agent` and `packages/auth` all have real
 integration tests and they all point at the *same* database, so running them at once lets one
 package's fixtures land inside another package's assertions. The specs mutate global singletons —
 the workspace `organization` row, `AppSetting`'s reporting currency, the exchange-rate table — and
@@ -138,9 +138,8 @@ comment at the bottom of the PR body. **Retitle the PR yourself and it stops**: 
 matches, the automation leaves the title alone from then on, and the `PR title` check is all that is
 left, guarding your wording rather than nagging you for it.
 
-The script reaches a model over the `ANTHROPIC_API_KEY` secret, and without it falls back to the
-changed paths and the branch name — a valid title, and a duller one. Set the secret if you want the
-changelog to read well; nothing breaks if you don't.
+The privacy fork generates titles from changed paths and the branch name.
+The script does not send source code to a model provider.
 
 The type decides both the version bump and the heading it appears under:
 

@@ -3,8 +3,6 @@
 set -euo pipefail
 
 TYPES='feat|fix|perf|refactor|docs|revert|deps|chore|test|ci|build|style'
-MODEL='claude-opus-5'
-DIFF_BYTES=40000
 
 check() {
 	local title=${1-} subject
@@ -104,50 +102,6 @@ subject_from_branch() {
 	printf '%s' "$subject"
 }
 
-model_title() {
-	local base=$1 head=$2 scopes=$3 evidence body response title
-	command -v jq >/dev/null 2>&1 || return 1
-
-	evidence=$(
-		printf 'Commit subjects:\n%s\n\n' "$(git log "$base..$head" --no-merges --reverse --format='- %s')"
-		printf 'Files changed:\n%s\n\n' "$(git diff --stat "$base..$head")"
-		printf 'Diff:\n%s\n' "$(git diff "$base..$head" | head -c "$DIFF_BYTES")"
-	)
-
-	body=$(jq -n \
-		--arg model "$MODEL" \
-		--arg system "You write the Conventional Commit title for a pull request that will be squashed onto main, so the title is the commit subject and the line a person reads in the changelog months from now. Write it for that reader: what the change does for them, not which files moved.
-
-Format: type(scope): subject
-Types: feat (new capability, minor bump), fix, perf, refactor, docs, revert (patch), chore, test, ci, build, style (no release). Add ! before the colon only for a breaking change.
-Scopes, one only, omitted when the change spans several: $scopes.
-Subject: lowercase imperative, no trailing full stop, under 60 characters, no ticket numbers and no file paths.
-
-Reply with the title on one line and nothing else." \
-		--arg user "$evidence" \
-		'{model: $model,
-		  max_tokens: 4000,
-		  system: $system,
-		  output_config: {effort: "low"},
-		  messages: [{role: "user", content: $user}]}')
-
-	response=$(curl -fsS --max-time 120 https://api.anthropic.com/v1/messages \
-		-H "x-api-key: $ANTHROPIC_API_KEY" \
-		-H 'anthropic-version: 2023-06-01' \
-		-H 'content-type: application/json' \
-		-d "$body") || return 1
-
-	[ "$(printf '%s' "$response" | jq -r '.stop_reason // ""')" = "refusal" ] && return 1
-
-	title=$(printf '%s' "$response" |
-		jq -r '[.content[] | select(.type == "text") | .text] | join("")' |
-		grep -v '^[[:space:]]*$' | head -1 |
-		sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/^`//' -e 's/`$//')
-
-	check "$title" || return 1
-	printf '%s' "$title"
-}
-
 generate() {
 	local base=$1 head=$2 branch=${3-} floor
 	floor=$(floor_of "$base" "$head")
@@ -161,17 +115,6 @@ propose() {
 
 	files=$(git diff --name-only "$base..$head")
 	scope=$(scope_for "$files")
-
-	if [ -n "${ANTHROPIC_API_KEY:-}" ]; then
-		local allowed
-		allowed=$( (printf '%s\n' "$files" | sed -n -e 's#^apps/\([^/]*\)/.*#\1#p' -e 's#^packages/\([^/]*\)/.*#\1#p'
-			printf 'docs\nci\ndeps\n') | sort -u | paste -sd ',' - | sed 's/,/, /g')
-		if title=$(model_title "$base" "$head" "$allowed"); then
-			printf '%s\n' "$title"
-			return 0
-		fi
-		echo "The model did not return a usable title — falling back to the branch name." >&2
-	fi
 
 	conventional=$(
 		while IFS= read -r subject; do

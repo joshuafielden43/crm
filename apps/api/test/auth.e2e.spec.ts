@@ -41,6 +41,12 @@ describe("Auth (e2e)", () => {
 		await request(app.getHttpServer()).get("/auth/me").expect(401);
 	});
 
+	it("does not expose a vendor telemetry collection route", async () => {
+		await request(app.getHttpServer())
+			.post("/internal/telemetry/rollup")
+			.expect(404);
+	});
+
 	it("allows an unauthenticated request to an optional-auth route", async () => {
 		const response = await request(app.getHttpServer())
 			.get("/auth/session")

@@ -314,7 +314,8 @@ short version:
 | `AGENT_BRIDGE_SECRET` | Lets a rep talk to the agent from a contact's **Agent** tab. |
 | `REDIS_URL` | A shared cache. Without it, per-instance and in-memory. |
 | `CRON_SECRET` | Guards the mailbox sync route. Required to use it. |
-| `CRM_TELEMETRY_DISABLED` | Set to `1` and this install reports nothing. `DO_NOT_TRACK` too. |
+
+This fork removes CRM vendor telemetry and PostHog code. See [PRIVACY.md](./PRIVACY.md) for remaining external integrations.
 
 ## Tasks
 

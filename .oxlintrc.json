@@ -52,7 +52,6 @@
 		},
 		{
 			"files": [
-				"packages/telemetry/src/**",
 				"apps/api/src/logging/**",
 				"packages/db/src/fields.ts",
 				"packages/db/src/fields-shape.ts",

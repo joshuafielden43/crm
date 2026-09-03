@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "./reduced-motion.css";
 
 @source "../../**/*.{ts,tsx}";
 
@@ -870,16 +871,6 @@
 	100% {
 		transform: scale3d(1, 0.045, 1);
 		transform-origin: 50% 0%;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.link-hover,
-	.link-hover *,
-	.link-hover::before,
-	.link-hover::after {
-		animation: none !important;
-		transition-duration: 0.01ms !important;
 	}
 }
 

@@ -68,6 +68,28 @@
 	},
 	"overrides": [
 		{
+			"includes": [
+				"packages/auth/src/index.ts",
+				"packages/db/src/index.ts",
+				"packages/db/src/fields.ts",
+				"packages/db/src/blob.ts",
+				"apps/agent/agent/lib/tasks.ts",
+				"apps/api/src/google/google.constants.ts",
+				"apps/api/src/mailbox/mailbox.constants.ts",
+				"apps/api/src/microsoft/microsoft.constants.ts",
+				"apps/app/postcss.config.mjs"
+			],
+			"linter": { "rules": { "performance": { "noBarrelFile": "off" } } }
+		},
+		{
+			"includes": ["packages/db/src/index.ts", "packages/db/src/fields.ts"],
+			"linter": { "rules": { "performance": { "noReExportAll": "off" } } }
+		},
+		{
+			"includes": ["packages/ui/src/styles/reduced-motion.css"],
+			"linter": { "rules": { "complexity": { "noImportantStyles": "off" } } }
+		},
+		{
 			"includes": ["apps/app/**"],
 			"linter": {
 				"domains": {

@@ -15,6 +15,7 @@ permissions:
 
 jobs:
   release-please:
+    if: github.repository == 'joshuafielden43/crm'
     name: Release pull request, tag and notes
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -89,6 +90,7 @@ jobs:
 
       - name: Fail on a merged release pull request that was never tagged
         env:
+          GH_REPO: joshuafielden43/crm
           GH_TOKEN: ${{ secrets.AUTOMATION_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail

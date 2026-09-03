@@ -1,0 +1,9 @@
+@media (prefers-reduced-motion: reduce) {
+	.link-hover,
+	.link-hover *,
+	.link-hover::before,
+	.link-hover::after {
+		animation: none !important;
+		transition-duration: 0.01ms !important;
+	}
+}

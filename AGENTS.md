@@ -1,5 +1,18 @@
 # Strict rules — review before starting any work
 
+## Privacy fork publishing policy
+
+This repository publishes only to `https://github.com/joshuafielden43/crm.git`.
+`origin` and `main` always refer to this fork, never `trycompai/crm`.
+`upstream` is fetch-only. Never create upstream pull requests or use upstream as a push destination.
+Use `--repo joshuafielden43/crm` with GitHub CLI writes.
+Never bypass or replace the destination guard. Never use `--no-verify` to publish.
+Every successful commit starts a background push and SHA-pinned CI watcher.
+Run `bun run publish:status` after committing. Wait for its terminal result before claiming completion.
+Do not create an extra commit just to retry. Use `bun run publish:retry` after resolving a failure.
+See `CONTRIBUTING.md` for installation, receipts, tests, and lint exceptions.
+Vikunja is the fork's tracker. The inherited Median section below does not apply to this fork.
+
 **Read the doc for the area you are touching before you touch it.** The table
 below is the whole index. These are plain paths, not imports: they are not in your
 context until you read them, and the rules in them are not optional.

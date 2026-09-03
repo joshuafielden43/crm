@@ -1,5 +1,8 @@
 # adrs
 
+The privacy fork also records user-approved implementation decisions here.
+See [privacy-fork-publishing.md](privacy-fork-publishing.md) for tracked hooks, publishing boundaries, and CI ownership.
+
 Proposals live here. One file per idea, `.md` or `.txt`, named after the thing you want to change.
 
 Write it yourself, in your own words, at whatever length the idea actually needs — a paragraph is a

@@ -4,10 +4,13 @@
 	"license": "MIT",
 	"version": "1.15.3",
 	"scripts": {
-		"prepare": "git config core.hooksPath .githooks 2>/dev/null || true",
+		"prepare": "node scripts/install-hooks.mjs",
+		"publish:status": "node scripts/publish.mjs status",
+		"publish:retry": "node scripts/publish.mjs queue",
+		"test:hooks": "node --test scripts/test/*.test.mjs",
 		"build": "turbo run build",
 		"dev": "turbo run dev",
-		"lint": "turbo run lint",
+		"lint": "biome check scripts biome.jsonc package.json --error-on-warnings && turbo run lint -- --error-on-warnings",
 		"lint:slop": "oxlint",
 		"lint:dead": "knip --no-progress",
 		"format": "biome format --write .",
@@ -24,6 +27,7 @@
 		"db:test": "bun run --filter=@crm/db db:test"
 	},
 	"devDependencies": {
+		"zod": "^4.4.3",
 		"@biomejs/biome": "^2.4.10",
 		"@oxlint/plugins": "1.78.0",
 		"knip": "6.32.2",

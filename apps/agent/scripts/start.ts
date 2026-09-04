@@ -1,5 +1,6 @@
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { constants } from "node:os";
+import { SANDBOX } from "../agent/lib/sandbox-config";
 
 const rawPort = process.env.AGENT_PORT ?? process.env.PORT ?? "2000";
 const port = Number(rawPort);
@@ -8,6 +9,17 @@ if (!Number.isInteger(port) || port < 1 || port > 65_535) {
 	throw new Error(
 		`AGENT_PORT or PORT must be a valid port, received ${rawPort}.`,
 	);
+}
+
+const docker = spawnSync(process.env.EVE_DOCKER_PATH || "docker", ["info"], {
+	stdio: "ignore",
+	timeout: SANDBOX.startupTimeoutMs,
+});
+if (docker.error || docker.status !== 0) {
+	console.error(
+		"Docker sandbox unavailable. Install the Docker CLI and provide a reachable daemon. Agent startup refused.",
+	);
+	process.exit(1);
 }
 
 const cli = process.platform === "win32" ? "eve.cmd" : "eve";

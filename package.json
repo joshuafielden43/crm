@@ -48,5 +48,8 @@
 	"workspaces": [
 		"apps/*",
 		"packages/*"
-	]
+	],
+	"patchedDependencies": {
+		"eve@0.29.4": "patches/eve@0.29.4.patch"
+	}
 }

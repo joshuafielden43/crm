@@ -303,6 +303,16 @@ the backend factory** so it cannot be forgotten per session. Costs nothing —
 **Never give the sandbox `DATABASE_URL`.** CRM access is authored tools. A shell with
 credentials and network is exfiltration-shaped; with neither it is a text processor.
 
+All three agents require Docker explicitly. They never fall back to just-bash or hosted sandboxes.
+`lib/sandbox-config.ts` pins the sandbox image digest and forbids automatic image pulls.
+Preload that image on the Docker daemon before startup.
+The agent image must contain the Docker CLI and reach the sandbox daemon.
+`scripts/start.ts` refuses startup when the CLI or daemon is unavailable.
+The Docker socket belongs only to the trusted controller, never to a sandbox.
+The tracked Eve patch disables networking before template and session setup.
+It reapplies the policy before reconnecting a stopped or running sandbox.
+Keep the patch when updating Eve, until the dependency provides both guarantees.
+
 ## Team-agent builder and runner
 
 `agent_builder` and `agent_runner` are declared subagents with independent

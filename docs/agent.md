@@ -722,3 +722,17 @@ script did not create.
 **`taskFromToken` keys on the `task:` marker, not a fixed prefix**
 (`test/crm-token.spec.ts`). **A channel handler must not assume the token it receives
 is byte-identical to the one it sent.**
+
+## Local cancellation recovery
+
+The pinned Eve patch records a step completion intent before updating the local
+step projection. Local-world startup reconciles that intent and its replay event
+before resuming runs. It also restores missing completion events for older
+completed projections. Recorded outputs are reused; completed steps are not
+executed again. This targets the single-worker filesystem deployment.
+
+`test/workflow-completion-recovery.spec.ts` kills a separate process between the
+completion writes, then verifies one completion event, the original output, and
+one step attempt across repeated startup. Application cancellation still requires
+`turn.cancelled` followed by `session.waiting`; an accepted request alone is not
+proof of settlement.

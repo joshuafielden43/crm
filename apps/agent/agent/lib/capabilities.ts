@@ -46,6 +46,12 @@ export function capabilitiesFrom(
 
 	return [
 		{
+			...fromEnv("SEARXNG_URL"),
+			label: "Lab web search",
+			gives:
+				"public web source URLs and snippets through search_lab_web; synthesis uses the configured Hermes model",
+		},
+		{
 			...fromEnv("PERPLEXITY_API_KEY"),
 			label: "Web research",
 			gives:

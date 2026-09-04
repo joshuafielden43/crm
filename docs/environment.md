@@ -202,3 +202,7 @@ See `PRIVACY.md` for remaining integration and framework work.
 - **Redis** — optional; without `REDIS_URL` the cache is per-instance in-memory, which
   is wrong for multi-instance.
 - **Sign-in method** — Google and Microsoft are in code; an IdP is a row (SSO, in `api.md`).
+
+`SEARXNG_URL` optionally selects a private SearXNG origin for `search_lab_web`.
+The controller fetches bounded search snippets with redirects disabled. Hermes synthesizes the answer.
+Missing configuration disables this tool without a fallback. Sandbox networking stays deny-all.

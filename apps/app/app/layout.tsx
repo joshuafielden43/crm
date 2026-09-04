@@ -1,6 +1,8 @@
 import "@crm/ui/globals.css";
 import { Toaster } from "@crm/ui/components/sonner";
 import { TooltipProvider } from "@crm/ui/components/tooltip";
+import { GeistMono } from "geist/font/mono";
+import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { LocalDateTimeHydrator } from "@/components/local-date-time";
@@ -29,7 +31,11 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning className="h-full antialiased">
+		<html
+			lang="en"
+			suppressHydrationWarning
+			className={`${GeistSans.variable} ${GeistMono.variable} h-full antialiased`}
+		>
 			<body className="flex min-h-full flex-col font-sans">
 				<NuqsAdapter>
 					<TRPCReactProvider>
